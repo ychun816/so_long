@@ -6,16 +6,17 @@
 /*   By: yilin <yilin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 14:03:22 by yilin             #+#    #+#             */
-/*   Updated: 2024/07/26 18:49:59 by yilin            ###   ########.fr       */
+/*   Updated: 2024/07/27 20:51:57 by yilin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SO_LONG_H
 # define SO_LONG_H
 
+# include "../mlx_linux/mlx_int.h"
+# include "../mlx_linux/mlx.h"
 # include "../libft/includes/libft.h"
 # include "../libft/includes/ft_printf.h"
-# include "../libft/includes/get_next_line.h"
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
@@ -24,14 +25,14 @@
 # include <errno.h>
 # include <mlx.h>
 
-
 /* ************************************************************************** */
 /*                                STRUCTURE                                   */
 /* ************************************************************************** */
-if (is_true == FALSE)
-{
-	return (SUCCESS);
-}
+
+// if (is_true == FALSE)
+// {
+// 	return (SUCCESS);
+// }
 
 /*
 typedef enum e_error
@@ -51,8 +52,6 @@ typedef enum e_error
 /* ************************************************************************** */
 /*                                FUNCTIONS                                   */
 /* ************************************************************************** */
-
-
 
 
 

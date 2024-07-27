@@ -6,7 +6,7 @@
 #    By: yilin <yilin@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/17 11:22:23 by yilin             #+#    #+#              #
-#    Updated: 2024/07/21 18:38:02 by yilin            ###   ########.fr        #
+#    Updated: 2024/07/27 21:29:10 by yilin            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,8 +19,13 @@ PINKB = \033[1;95m
 REDB = \033[1;91m
 ROSEB = \033[1;38;5;225m
 BLUEB = \033[1;34m
+BABEBLUEB = \033[1;38;5;153m
 GREENB = \033[1;38;5;85m
 PURPLEB = \033[1;38;5;55m
+GREEN_BBG = \033[1;42m
+BLUE_BBG = \033[1;44m
+YELLOW_BBG = \033[1;43m
+ORANGE_BBG = \033[1;48;5;214m
 
 # **************************************************************************** #
 #                                 MAIN                                         #
@@ -117,7 +122,7 @@ RM = rm -rf
 # **************************************************************************** #
 
 all: $(NAME)
-	@echo "$(PURPLEB)✨COMPILATION DONE!$(NAME) CREATED✨$(COLOR_RESET)"
+	@echo "$(BLUEB)✨COMPILATION DONE!$(NAME) CREATED✨$(COLOR_RESET)"
 
 $(NAME): $(OBJS)
 	$(AR) $(NAME) $(OBJS)
