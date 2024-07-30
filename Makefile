@@ -6,7 +6,7 @@
 #    By: yilin <yilin@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/10 12:11:58 by yilin             #+#    #+#              #
-#    Updated: 2024/07/27 21:29:55 by yilin            ###   ########.fr        #
+#    Updated: 2024/07/29 16:27:40 by yilin            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -80,7 +80,7 @@ DEPS = $(addprefix $(OBJS_DEPS_DIR), $(SO_LONG_FILES:.c=.d))
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -I$(LIBFT_HEADERS) -I$(MLX_DIR) -I$(INCL) -g3
-LFLAGS = -L$(LIBFT_DIR) -lft -L$(MLX_DIR) -lmlx_Linux -lXext -lX11 -lm
+LFLAGS = -L$(LIBFT_DIR) -lft -L$(MLX_DIR) -lmlx -lXext -lX11 -lm #-lmlx_Linux
 RM = rm -rf
 #AR = ar rcs
 OBJS_FLAGS = .cache_exists
