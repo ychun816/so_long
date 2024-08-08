@@ -6,7 +6,7 @@
 /*   By: yilin <yilin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 14:03:22 by yilin             #+#    #+#             */
-/*   Updated: 2024/07/30 17:04:54 by yilin            ###   ########.fr       */
+/*   Updated: 2024/08/08 17:51:01 by yilin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ typedef struct	s_img
 	void	*ptr;
 	char	*pixel_ptr;
 	int	bpp;//Bits per pixel
-	int	endian;//Endianness of the image data
+	int	endian;//端序Endianness of the image data "大端和小端（Big endian and Little endian）"
 	int	pline_len;//Length of a line of pixels in bytes, used for alignment optimization.
 }	t_img;
 
@@ -75,15 +75,16 @@ typedef struct	s_player
 typedef struct s_mlx
 {
 	void	*mlx_ptr;//Connection pointer (e.g., to a graphics library like MiniLibX)
-	void	*window_ptr;
+	void	*window;
 	t_img	img[SPRITES_NB];//Array of images
 	char	**map;//2D array => the game map.
 	int	width;
 	int	height;
-	int	collectable_left;//Number of coins left to collect
 	int	player_x;
 	int	player_y;
 	int	player_dir;//player's direction
+	int	collectable_left;//Number of coins left to collect
+	int	moves;
 }	t_mlx;
 
 /*structure for check*/
