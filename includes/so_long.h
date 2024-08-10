@@ -6,7 +6,7 @@
 /*   By: yilin <yilin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 14:03:22 by yilin             #+#    #+#             */
-/*   Updated: 2024/08/08 17:51:01 by yilin            ###   ########.fr       */
+/*   Updated: 2024/08/10 18:44:20 by yilin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,10 @@ typedef struct s_mlx
 	char	**map;//2D array => the game map.
 	int	width;
 	int	height;
-	int	player_x;
-	int	player_y;
-	int	player_dir;//player's direction
-	int	collectable_left;//Number of coins left to collect
+	int	p_x;
+	int	p_y;
+	int	p_dir;//player's direction
+	int	left_collectable;//Number of coins left to collect
 	int	moves;
 }	t_mlx;
 

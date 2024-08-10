@@ -6,7 +6,7 @@
 /*   By: yilin <yilin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 18:21:31 by yilin             #+#    #+#             */
-/*   Updated: 2024/08/08 19:26:11 by yilin            ###   ########.fr       */
+/*   Updated: 2024/08/10 20:00:06 by yilin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,17 @@
 //handle input
 int handle_keyboard(int keyboard, t_mlx *data)
 {
-	
 	//// Get player coordinates (px, py) from the map ////
-	data->player_x = get_xy(data->map, 'P') &  0x0000FFFF; TODO:
-	data->player_y = get_xy(data->map, 'p') >> 32; TODO:
+	
+	//extracts the x-coordinate from the lower 16 bits of the 64-bit value
+	//x-coordinate and the upper 48 bits are irrelevant for x-coordinate extraction, 
+	//the mask 0x0000FFFF will effectively zero out all but the lower 16 bits, giving you just the x-coordinate.
+	data->p_x = get_xy(data->map, 'P') &  0x0000FFFF;
+	//extracts the y-coordinate from the upper 32 bits of the 64-bit value.
+	//Shifting the bits of the value returned by get_xy(data->map, 'p') by 32 positions to the right 
+	//moves the upper 32 bits into the lower 32-bit position, effectively extracting the y-coordinate if it’s stored in the upper 32 bits of the 64-bit value.
+	data->p_y = get_xy(data->map, 'p') >> 32;
+
 	////Handle different key events////
 	// If the Escape key is pressed => exit_program
 	if (keyboard == XK_Escape)
@@ -45,51 +52,71 @@ int handle_keyboard(int keyboard, t_mlx *data)
 //move player
 void	move_player(t_mlx *data, int direction)
 {
-	
+	// Set player's direction
+	data->p_dir = direction;
+	//// Check if the player can move in the given direction////
+	// If moving UP and not blocked => Update map for moving up
+	if (data->p_dir == PUP && !is_blocked(data))
+		update_pos_map(data, -1, 0);
+	// If moving RIGHT and not blocked => Update map for moving right
+	else if (data->p_dir == PRIGHT && !is_blocked(data))
+		update_pos_map(data, 0, 1);
+	// If moving DOWN and not blocked => Update map for moving down
+	else if (data->p_dir == PDOWN && !is_blocked(data))
+		update_pos_map(data, 1, 0);
+	// If moving LEFT and not blocked => Update map for moving left => // Animate the player's movement
+	else if (data->p_dir == PLEFT && !is_blocked(data))
+		update_pos_map(data, 0, -1);
 }
 
 //set_map
 //char **map_copy for Flood fill=>algo to run to check if exit point is valid
-void	set_map(t_mlx *data, int y, int x)
+void	update_pos_map(t_mlx *data, int y, int x)
 {
+	long	exit;
+
+	//// Check if the player is moving to a position with a collectable////
+	if (data->map[(data->p_y) + y][(data->p_x) + x] == 'C')
+	{
+		// Print a message : "cllectable being collected"
+		ft_printf("collectable collected!");
+		// Decrease the number of coins left to collect
+		data->left_collectable--;
+	}
 	
+	////Get the coordinates of the exit ('E') on the map////
+	exit = get_xy(data->map, 'E');
+
+	//// If all collectable have been collected and the exit exists////
+	if (data->left_collectable == 0 && exit != -1)
+	{
+		// Change the exit from 'E' to 'o' (open exit)
+		//exit >> 32: This extracts the y coordinate (row) of the exit by shifting the bits of exit 32 positions to the right.
+		//exit & 0xFFFFFFFF:"&":"AND" => extracts the x coordinate (column) by masking out the upper 32 bits, leaving only the lower 32 bits.
+		data->map[exit >> 32][exit & 0xFFFFFFFF] = 'o';
+		//print img
+		// Calculate the x-coordinate in pixels by extracting the lower 32 bits of 'exit'
+            // (which represent the x-coordinate in map units) and multiplying by BPS (block pixel size) =》block coordinates to pixel coordinates.
+		// Calculate the y-coordinate in pixels by shifting 'exit' 32 bits to the right
+            // (which gives the y-coordinate in map units) and multiplying by BPS (block pixel size) =》block coordinates to pixel coordinates.
+		print_img(data, data->img[EXIT1].ptr , (exit & 0xFFFFFFFF)* BPS, (exit >> 32) * BPS);
+		// Synchronize the display with the window (update the graphics)
+		mlx_do_sync(data->mlx_ptr);
+	}
+	// If the player reaches the open exit ('o')
+	else if (data->map[(data->p_y) + y][(data->p_x) + x] == 'o')
+	{
+		//print message
+		ft_printf("YOU WON!!!!\n", data->moves);
+		//exit program
+		exit_program(data);
+	}
+	// Update the player's position on the map to the new location
+	data->map[(data->p_y) + y][(data->p_x) + x] = 'P';
+	// Clear the old position of the player on the map
+	//NOTE! if dont clear old pos => both the new and old positions marked as the player’s position => wrong logic!
+	data->map[data->p_y][data->p_x] = '0';
 }
-
-// structure
-
-// /*structure for img*/
-// typedef struct	s_img
-// {
-// 	void	*ptr;
-// 	char	*pixel_ptr;
-// 	int	bpp;//Bits per pixel
-// 	int	endian;//端序Endianness of the image data "大端和小端（Big endian and Little endian）"
-// 	int	pline_len;//Length of a line of pixels in bytes, used for alignment optimization.
-// }	t_img;
-
-// /*structure for player*/
-// typedef struct	s_player
-// {
-// 	int	x;
-// 	int	y;
-// 	int	step_count;
-// }	t_player;
-
-// /*structure for mlx commands*/
-// typedef struct s_mlx
-// {
-// 	void	*mlx_ptr;//Connection pointer (e.g., to a graphics library like MiniLibX) => cnx=connection to mlx
-// 	void	*window;
-// 	t_img	img[SPRITES_NB];//Array of images
-// 	char	**map;//2D array => the game map.
-// 	int	width;
-// 	int	height;
-// 	int	player_x;
-// 	int	player_y;
-// 	int	player_dir;//player's direction
-// 	int	collectable_left;//Number of coins left to collect
-// 	int	moves;
-// }	t_mlx;
 
 // mlx_hook() => set up event handling for a window in the MiniLibX library
 
