@@ -6,7 +6,7 @@
 /*   By: yilin <yilin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 18:21:31 by yilin             #+#    #+#             */
-/*   Updated: 2024/08/10 20:00:06 by yilin            ###   ########.fr       */
+/*   Updated: 2024/08/11 20:55:44 by yilin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # define WINDOW_HEIGHT 300
 # define MLX_ERROR 1
 
-//handle input
+////HANDLE KEYBOARD////
 int handle_keyboard(int keyboard, t_mlx *data)
 {
 	//// Get player coordinates (px, py) from the map ////
@@ -24,7 +24,7 @@ int handle_keyboard(int keyboard, t_mlx *data)
 	//extracts the x-coordinate from the lower 16 bits of the 64-bit value
 	//x-coordinate and the upper 48 bits are irrelevant for x-coordinate extraction, 
 	//the mask 0x0000FFFF will effectively zero out all but the lower 16 bits, giving you just the x-coordinate.
-	data->p_x = get_xy(data->map, 'P') &  0x0000FFFF;
+	data->p_x = (data->map, 'P') &  0x0000FFFF;
 	//extracts the y-coordinate from the upper 32 bits of the 64-bit value.
 	//Shifting the bits of the value returned by get_xy(data->map, 'p') by 32 positions to the right 
 	//moves the upper 32 bits into the lower 32-bit position, effectively extracting the y-coordinate if it’s stored in the upper 32 bits of the 64-bit value.
@@ -49,7 +49,7 @@ int handle_keyboard(int keyboard, t_mlx *data)
     return (0);
 }
 
-//move player
+////MOVE PLAYER////
 void	move_player(t_mlx *data, int direction)
 {
 	// Set player's direction
@@ -69,7 +69,7 @@ void	move_player(t_mlx *data, int direction)
 		update_pos_map(data, 0, -1);
 }
 
-//set_map
+///UPDATE POS MAP////
 //char **map_copy for Flood fill=>algo to run to check if exit point is valid
 void	update_pos_map(t_mlx *data, int y, int x)
 {
@@ -120,7 +120,7 @@ void	update_pos_map(t_mlx *data, int y, int x)
 
 // mlx_hook() => set up event handling for a window in the MiniLibX library
 
-//main
+////MAIN////
 int	main(int ac, char **av)
 {
 	t_mlx	data;

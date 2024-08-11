@@ -6,8 +6,20 @@
 /*   By: yilin <yilin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:11:51 by yilin             #+#    #+#             */
-/*   Updated: 2024/08/08 17:50:41 by yilin            ###   ########.fr       */
+/*   Updated: 2024/08/11 17:36:18 by yilin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
+
+
+is_map_valid(data.map, av[1], &data)
+{
+	
+}
+
+
+is_blocked(data)
+{
+	
+}
