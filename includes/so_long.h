@@ -6,7 +6,7 @@
 /*   By: yilin <yilin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 14:03:22 by yilin             #+#    #+#             */
-/*   Updated: 2024/08/10 18:44:20 by yilin            ###   ########.fr       */
+/*   Updated: 2024/08/14 15:48:45 by yilin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,16 +42,18 @@
 // {
 // 	return (SUCCESS);
 // }
-/*
-typedef enum e_error
-{
-	FALSE = 0,
-	TRUE = 1,	
-}	t_error;
-*/
+
 
 /* a byte = 8 bits.*/
 // typedef unsigned char	t_byte;
+
+/* BOOLEAN
+typedef enum e_error
+{
+	TRUE = 1,	
+	FALSE = 0,
+}	t_error;
+*/
 
 /*structure for img*/
 typedef struct	s_img
@@ -92,9 +94,9 @@ typedef struct s_check
 {
 	int	player_count;//Number of player start positions
 	int	exit_count;//Number of exits
-	int	count_count;//Number of collectibles
-	char	**dfsmap;//2D array used for depth-first search, possibly for pathfinding or validation.
-};
+	int	collectable_count;//Number of collectibles
+	char	**dfs_map;//2D array used for depth-first search, possibly for pathfinding or validation.
+} t_check;
 
 /* ************************************************************************** */
 /*                                FUNCTIONS                                   */
