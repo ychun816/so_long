@@ -6,7 +6,7 @@
 /*   By: yilin <yilin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:00:05 by yilin             #+#    #+#             */
-/*   Updated: 2024/08/10 19:46:04 by yilin            ###   ########.fr       */
+/*   Updated: 2024/08/15 19:32:55 by yilin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,17 +57,18 @@
 /*                                     PATHS                                  */
 /* ************************************************************************** */
 //example
-# define WALL_P "sprites/wall.xpm"
-# define FLOOR_P "sprites/floor.xpm"
-# define EXIT1_P "sprites/exit_open.xpm"
-# define EXIT2_P "sprites/exit_closed.xpm"
+# define WALL_PATH "sprites/wall.xpm"
+# define FLOOR_PATH "sprites/floor.xpm"
+# define EXIT1_PATH "sprites/exit_open.xpm"
+# define EXIT2_PATH "sprites/exit_closed.xpm"
+# define COLLECTABLE_PATH "sprites/" TODO:
+# define PDOWN_PATH "sprites/" TODO:
 
 /* ************************************************************************** */
 /*                              ERROR MESSAGE                                 */
 /* ************************************************************************** */
 
 # define ERR_MALLOC "Error\nMalloc failed\n"
-
 
 
 #endif

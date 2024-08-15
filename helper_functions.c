@@ -6,7 +6,7 @@
 /*   By: yilin <yilin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 16:28:32 by yilin             #+#    #+#             */
-/*   Updated: 2024/08/14 21:27:44 by yilin            ###   ########.fr       */
+/*   Updated: 2024/08/15 19:15:47 by yilin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,12 +135,12 @@ void	ft_dfs(char **map, int y, int x, char *notwalls)
 	//=> return (end this path)
 	if (rowlen < 0 || rowlen >= n_rows || x < 0 || x >= rowlen
 		|| !ft_strchr(notwalls, map[y][x])
-		|| map[y][x] == '~')TODO:
+		|| map[y][x] == '~')
 	{
 		return ;	
 	}
 	// Mark the current position as visited by setting it to '~'
-	map[y][x] = '~'; TODO:
+	map[y][x] = '~';
 	// Recursively explore all four possible directions: up, down, right, left
 	ft_dfs(map, y - 1, x, notwalls);//UP
 	ft_dfs(map, y + 1, x, notwalls);//DOWN

@@ -6,7 +6,7 @@
 /*   By: yilin <yilin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:11:51 by yilin             #+#    #+#             */
-/*   Updated: 2024/08/14 21:13:33 by yilin            ###   ########.fr       */
+/*   Updated: 2024/08/15 19:41:53 by yilin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ char *map[] =
 */
 
 //// elements valid ////
-bool	is_elements_valid(char **map, t_check *content);
+bool	is_elements_valid(char **map, t_check *content)
 {
 	int	y; //Row index variable.
 	int	x; //Column index variable.
@@ -165,9 +165,41 @@ bool	is_path_valid(char **map, t_check *content)
 }
 
 //// is line valid ////
-bool	is_line_valid(char **line, int i, int wall)TODO:
+bool	is_line_valid(char **line, int y, int wall)
 {
-	
+	int	x;// Column index variable
+
+	x = 0;
+	// If the first character of the line is not '1' (a wall)=> return false
+	if (line[y][x] != '1')
+		return (FALSE);
+	// Loop through the line -> check for a wall.
+	while (line[y][++x])
+	{
+		// If a "non-wall character" is found in a wall line => return false
+		if (line[y][x] != '1')
+			return (FALSE);
+		// If the end of the line is reached => return true (valid wall line)
+		if (line[y][x + 1] == '\n' || line[y][x + 1] == '\0')
+			return (TRUE);
+	}
+	// Loop through the line -> check NOT a wall.
+	while (line[y][++x] && !wall)
+	{
+		// If a '1' is found and it's not followed by a newline = > skip to the next character.
+		if (line[y][x] == '1' && line[y][x + 1] != '\n')
+			x++;
+		// If a '1' is found and it's followed by a newline => return true (valid non-wall line).
+		if (line[y][x] == '1' && line[y][x + 1] == '\n')
+			return (TRUE);
+		// If a 'C' (collectible) or invalid 'E' (exit) is found => return false.
+		if (line[y][x] == 'C' || (line[y][x] == 'E' && line[y][x + 1] != '~')// right of the exit is not a valid path
+		&& (line[y][x] == 'E' && line[y][x - 1] != '~')//left of the exit is not a valid path.
+		&& (line[y][x] == 'E' && line[y - 1][x] != '~')//above the exit is not a valid path.
+		&& (line[y][x] == 'E' && line[y + 1][x] != '~'))//below the exit is not a valid path.
+			return (FALSE);
+	}
+	return (FALSE);// Return false if the line is invalid.
 }
 
 /*

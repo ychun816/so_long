@@ -6,7 +6,7 @@
 /*   By: yilin <yilin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 18:21:31 by yilin             #+#    #+#             */
-/*   Updated: 2024/08/11 20:55:44 by yilin            ###   ########.fr       */
+/*   Updated: 2024/08/15 19:13:41 by yilin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int handle_keyboard(int keyboard, t_mlx *data)
 }
 
 ////MOVE PLAYER////
-void	move_player(t_mlx *data, int direction)
+void	handle_player(t_mlx *data, int direction)
 {
 	// Set player's direction
 	data->p_dir = direction;
@@ -83,7 +83,7 @@ void	update_pos_map(t_mlx *data, int y, int x)
 		// Decrease the number of coins left to collect
 		data->left_collectable--;
 	}
-	
+
 	////Get the coordinates of the exit ('E') on the map////
 	exit = get_xy(data->map, 'E');
 
@@ -119,7 +119,6 @@ void	update_pos_map(t_mlx *data, int y, int x)
 }
 
 // mlx_hook() => set up event handling for a window in the MiniLibX library
-
 ////MAIN////
 int	main(int ac, char **av)
 {

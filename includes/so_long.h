@@ -6,7 +6,7 @@
 /*   By: yilin <yilin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 14:03:22 by yilin             #+#    #+#             */
-/*   Updated: 2024/08/14 15:48:45 by yilin            ###   ########.fr       */
+/*   Updated: 2024/08/15 19:32:42 by yilin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,13 @@
 
 # include <unistd.h>
 # include <stdio.h>
-
 # include <stdarg.h>
 # include <stdlib.h>
 # include <limits.h>
 # include <stdbool.h>
 # include <fcntl.h>
 # include <errno.h>
+
 # include <X11/X.h>
 # include <X11/keysym.h>
 # include <mlx.h>
@@ -43,10 +43,6 @@
 // 	return (SUCCESS);
 // }
 
-
-/* a byte = 8 bits.*/
-// typedef unsigned char	t_byte;
-
 /* BOOLEAN
 typedef enum e_error
 {
@@ -54,6 +50,12 @@ typedef enum e_error
 	FALSE = 0,
 }	t_error;
 */
+
+#define SUCCESS 0;
+#define ERROR 1;
+
+/* a byte = 8 bits.*/
+typedef unsigned char	t_byte;
 
 /*structure for img*/
 typedef struct	s_img
@@ -102,15 +104,34 @@ typedef struct s_check
 /*                                FUNCTIONS                                   */
 /* ************************************************************************** */
 
-/*EXIT PROGRAM =>QUIT GAME*/
-
-/*ERROR CHECK*/
-
 /*MAIN*/
+int		handle_keyboard(int keyboard, t_mlx *data);
+void	handle_player(t_mlx *data, int direction);
+void	update_pos_map(t_mlx *data, int y, int x);
+
+/*ERROR CHECKERS*/
+bool	is_pos_blocked(t_mlx *data);
+bool	is_map_valid(char **map, char *file_name, t_mlx *data);
+bool	is_map_rectangle(char **map);
+bool	is_elements_valid(char **map, t_check *content);
+bool	is_path_valid(char **map, t_check *content);
+bool	is_line_valid(char **line, int y, int wall);
+
+/*EXIT PROGRAM =>QUIT GAME*/
+int	exit_program(t_mlx	data);
 
 /*DISPLAY*/
+int	display_window(t_mlx *data, char *filename, int width, int height);
+int	load_imgs(t_mlx *data);
+void	display_map(t_mlx *data);
+void	move_player(t_mlx *data);
+// void	run_player_animation(t_mlx *data, int *x, int *y, int i);
 
 /*HELPER FUNC*/
-
+int	ft_arraylen(const char **array);
+long	get_xy(char** map, char element);
+int	print_img(t_mlx	*data, void *img_ptr, int x, int y);
+char **ft_arraydup(char **array);
+void	ft_dfs(char **map, int y, int x, char *notwalls);
 
 #endif
