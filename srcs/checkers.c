@@ -6,7 +6,7 @@
 /*   By: yilin <yilin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:11:51 by yilin             #+#    #+#             */
-/*   Updated: 2024/08/15 19:41:53 by yilin            ###   ########.fr       */
+/*   Updated: 2024/08/20 19:28:05 by yilin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,20 +22,22 @@
  * @return TRUE(1) if the position is blocked
  * @return FALSE(0) if the position is NOT blocked->passable
  **/
+
 bool is_pos_blocked(t_mlx *data)
 {
-	//UP: if pos above player is blocked
-	if ((data->p_dir == PUP && data->map[data->p_y - 1][data->p_x] == '1' || data->map[data->p_y - 1][data->p_x] == 'E') ||
-	//RIGHT: if pos right to player is blocked
-	(data->p_dir == PRIGHT && data->map[data->p_y][data->p_x + 1] == '1' || data->map[data->p_y][data->p_x + 1] == 'E') ||
-	//DOWN: if pos below player is blocked
-	(data->p_dir == PDOWN && data->map[data->p_y + 1][data->p_x] == '1' || data->map[data->p_y + 1][data->p_x] == 'E') ||
-	//LEFT: if pos left to player is blocked
-	(data->p_dir == PLEFT && data->map[data->p_y][data->p_x - 1] == '1' || data->map[data->p_y][data->p_x - 1] == 'E'))
-	{
-		return (TRUE) //return (1) => blocked
-	}
-	return (FALSE); //return (0) => passable
+    // Check if the position in the direction the player is facing is blocked
+    if ((data->p_dir == PUP &&
+        (data->map[data->p_y - 1][data->p_x] == '1' || data->map[data->p_y - 1][data->p_x] == 'E')) ||
+        (data->p_dir == PRIGHT &&
+        (data->map[data->p_y][data->p_x + 1] == '1' || data->map[data->p_y][data->p_x + 1] == 'E')) ||
+        (data->p_dir == PDOWN &&
+        (data->map[data->p_y + 1][data->p_x] == '1' || data->map[data->p_y + 1][data->p_x] == 'E')) ||
+        (data->p_dir == PLEFT &&
+        (data->map[data->p_y][data->p_x - 1] == '1' || data->map[data->p_y][data->p_x - 1] == 'E')))
+    {
+        return (TRUE); //return (1) => blocked
+    }
+    return (FALSE); //return (0) => passable
 }
 
 //// is map valid ////
@@ -48,18 +50,18 @@ bool is_map_valid(char **map, char *file_name, t_mlx *data)
 	if (!map || ft_strcmp(".ber", file_name + ft_strlen(file_name) - 4))
 		return (ft_putstr_fd("Wrong file name\n", STDERR_FILENO), FALSE);
 	// If the map has less than 3 lines => print an error and return false.
-	else if (ft_arraylen((const char **)map) <= 2)
+	else if (ft_strslen((const char **)map) <= 2)
 		return (ft_putstr_fd("Map too small (less than 3 lines)\n", STDERR_FILENO), FALSE);
 	// If the map is not a rectangle, print an error and return false.
 	else if (!is_map_rectangle(map))
-		return (ft_putstr_fd("Map is not retangle\n", STDERR_FILENO), FALSE);
+		return (ft_putstr_fd("Map is not rectangle\n", STDERR_FILENO), FALSE);
 	// Initialize the t_checks structure.
 	content = (t_check){0, 0, 0, NULL};
 	// If the map doesn't have the correct number of valid elements => print an error and return false.
 	if (!is_elements_valid(map, &content))
 		return (ft_putstr_fd("Elements invalid\n", STDERR_FILENO), FALSE);
 	// Store the number of coins in the data structure.
-	data->collectable_count = content.collectable_count;
+	data->left_collectable = content.count_collectable;
 	// If there's no valid path in the map => print an error and return false.
 	if (!is_path_valid(map, &content))
 		return (ft_putstr_fd("Path Invalid\n", STDERR_FILENO), FALSE);
@@ -75,15 +77,17 @@ bool is_map_valid(char **map, char *file_name, t_mlx *data)
  **/
 bool	is_map_rectangle(char **map)
 {
-	int	row;
-	int	last_row; //last row in the map
+	int		row;
+	int		last_row; //last row in the map
 	size_t	width;// Expected width of each row (excluding the newline character)
 
 	row = 0;
+	last_row = 0;
+	// printf("is map rectangle");
 	// Set the expected width to the length of the first row, minus 1 for the newline.
 	width = ft_strlen(map[0]) - 1;
 	// Get the index of the last row in the map.
-	row = ft_arraylen((const char **)map) - 1; // returns the total number of rows => minus 1 to get the index of the last line in the map array [0][1][2][3]
+	row = ft_strslen((const char **)map); // returns the total number of rows => minus 1 to get the index of the last line in the map strs [0][1][2][3]
 	// Loop through each row of the map.
 	while (map[row])
 	{
@@ -128,40 +132,13 @@ bool	is_elements_valid(char **map, t_check *content)
 				content->exit_count++;
 			// Increment the count of 'C' (collectible) elements.
 			if (map[y][x] == 'C')
-				content->collecable_count++;
+				content->count_collectable++;
 			// If the character is not one of the valid ones(1, P, E, C, \n) => return false (invalid map).
 			if (map[y][x] != '1' || map[y][x] != 'P' || map[y][x] != 'E' || map[y][x] != 'C' || map[y][x] != '\n')
-				return (FALSE);			
+				return (TRUE);			
 		}
 	}
-	return (TRUE);
-}
-
-//// is path valid ////ctangle(char **ma
-bool	is_path_valid(char **map, t_check *content)
-{
-	size_t	row; // Row index variable.
-	long	pos; // Position of the player in the map (x and y coordinates combined).
-
-	pos = get_xy(map, 'P');// Get the coordinates of the player.
-	// Duplicate the map for depth-first search (DFS).
-	content->dfs_map = ft_arraydup(map);
-	//starting from the player's position, to explore and mark all reachable locations in the map that contain valid paths ('0'), collectibles ('C'), or the player ('P')
-	ft_dfs(content->dfs_map, pos >> 32, pos & 0xFFFFFFFF, "OPC");
-	// Perform DFS starting from the player's position to mark reachable '0', 'P', and 'C' elements.
-	// Iterate through each line in the DFS map.
-	row = -1;
-    while (content->dfs_map[++row])
-	{
-		// If it's the first or last line and it's not valid => free the DFS map and return false.
-		if ()
-			return (free_strs(content->dfs_map, 1), FALSE);
-		// If it's not the first or last line and it's not valid => free the DFS map and return false.
-		else if ()
-			return (free_strs(content->dfs_map, 1), FALSE);
-	}
-	// Free the DFS map and return true if the path is valid.
-	return (free_strs(content->dfs_map, 1), TRUE);
+	return (FALSE);
 }
 
 //// is line valid ////
@@ -193,14 +170,87 @@ bool	is_line_valid(char **line, int y, int wall)
 		if (line[y][x] == '1' && line[y][x + 1] == '\n')
 			return (TRUE);
 		// If a 'C' (collectible) or invalid 'E' (exit) is found => return false.
-		if (line[y][x] == 'C' || (line[y][x] == 'E' && line[y][x + 1] != '~')// right of the exit is not a valid path
+		if (line[y][x] == 'C' || ((line[y][x] == 'E' && line[y][x + 1] != '~')// right of the exit is not a valid path
 		&& (line[y][x] == 'E' && line[y][x - 1] != '~')//left of the exit is not a valid path.
 		&& (line[y][x] == 'E' && line[y - 1][x] != '~')//above the exit is not a valid path.
-		&& (line[y][x] == 'E' && line[y + 1][x] != '~'))//below the exit is not a valid path.
+		&& (line[y][x] == 'E' && line[y + 1][x] != '~')))//below the exit is not a valid path.
 			return (FALSE);
 	}
 	return (FALSE);// Return false if the line is invalid.
 }
+
+// void	display(char **data)
+// {
+// 	int i = 0;
+// 	while (data[i])
+// 	{
+// 		printf("%s", data[i]);
+// 		i++;
+// 	}
+// }
+
+//// is path valid ////
+bool is_path_valid(char **map, t_check *content)
+{
+	size_t row; // Row index variable.
+	long pos; // Position of the player in the map (x and y coordinates combined).
+	size_t n_rows; // Number of rows in the map.
+	
+	pos = get_xy(map, 'P'); // Get the coordinates of the player.
+	content->dfs_map = ft_strsdup(map);// !!RETURNS UNALLOCATED MEMORY CAUSING SEGFAULTS LATER!! Duplicate the map for depth-first search (DFS).
+	// display(content->dfs_map);
+	n_rows = ft_strslen((const char **)content->dfs_map);// Get the number of rows
+	// Perform DFS starting from the player's position to mark reachable '0', 'P', and 'C' elements.
+	ft_dfs(content->dfs_map, pos >> 32, pos & 0xFFFFFFFF, "OPC");
+	row = 0;
+	while (row < n_rows)
+	{
+		// If it's the first or last line and it's not valid => free the DFS map and return false.
+		if ((row == 0 || row == (n_rows - 1)) && !is_line_valid(content->dfs_map, row, TRUE))
+		{
+			free_strs(content->dfs_map, 1);
+			return (TRUE);
+		}
+		// If it's not the first or last line and it's not valid => free the DFS map and return false.
+		else if (row != 0 && row != (n_rows - 1) && !is_line_valid(content->dfs_map, row, FALSE))
+		{
+			free_strs(content->dfs_map, 1);
+			return (TRUE);
+		}
+		row++;
+    }
+	// Free the DFS map and return true if the path is valid.
+	free_strs(content->dfs_map, 1);
+	return (FALSE);
+}
+// bool	is_path_valid(char **map, t_check *content)
+// {
+// 	size_t	row; // Row index variable.
+// 	long	pos; // Position of the player in the map (x and y coordinates combined).
+
+// 	pos = get_xy(map, 'P');// Get the coordinates of the player.
+// 	// Duplicate the map for depth-first search (DFS).
+// 	content->dfs_map = ft_strsdup(map);
+// 	//starting from the player's position, to explore and mark all reachable locations in the map that contain valid paths ('0'), collectibles ('C'), or the player ('P')
+// 	ft_dfs(content->dfs_map, pos >> 32, pos & 0xFFFFFFFF, "OPC");
+// 	// Perform DFS starting from the player's position to mark reachable '0', 'P', and 'C' elements.
+// 	// Iterate through each line in the DFS map.
+// 	row = -1;
+//     while (content->dfs_map[++row])
+// 	{
+// 		// If it's the first or last line and it's not valid => free the DFS map and return false.
+// 		if ((row == 0 || row == ft_strslen((const char **)content->dfs_map) - 1)
+// 			&& !is_line_valid(content->dfs_map, row, TRUE))
+// 			return (free_strs(content->dfs_map, 1), FALSE);
+// 		// If it's not the first or last line and it's not valid => free the DFS map and return false.
+// 		else if (!(row == 0 || row == ft_strslen((const char **)content->dfs_map) - 1)
+// 			&& !is_line_valid(content->dfs_map, row, FALSE))
+// 			return (free_strs(content->dfs_map, 1), FALSE);
+// 	// Free the DFS map and return true if the path is valid.
+// 	return (free_strs(content->dfs_map, 1), TRUE);
+// 	}
+// }
+
 
 /*
 pos >> 32: This extracts the y coordinate of the player’s position.

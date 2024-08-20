@@ -6,7 +6,7 @@
 /*   By: yilin <yilin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 19:26:48 by yilin             #+#    #+#             */
-/*   Updated: 2024/08/11 20:54:18 by yilin            ###   ########.fr       */
+/*   Updated: 2024/08/20 19:00:10 by yilin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	free_strs(char **strs, int heap)
 		free(strs);
 }
 
-//// ft_free ////
+//// ft_free / free all ////
 /**
  * @brief Frees various types of pointers based on the specified mode.
  * 
@@ -45,7 +45,7 @@ void	free_strs(char **strs, int heap)
  *            The argument list must end with a NULL pointer.
  * @return 1 on success. The return value is not used in this implementation.
  */
-int	ft_free(int mode, ...)
+int	free_all(int mode, ...)
 {
 	va_list	args;
 	void	*ptr;

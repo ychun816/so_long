@@ -6,12 +6,12 @@
 /*   By: yilin <yilin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 16:14:46 by yilin             #+#    #+#             */
-/*   Updated: 2024/07/27 20:51:11 by yilin            ###   ########.fr       */
+/*   Updated: 2024/08/19 16:57:45 by yilin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-/* OG strjoin; witout free*/
+/* OG strjoin; without free
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*join_str;
@@ -35,8 +35,8 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	}
 	join_str[i + j] = '\0';
 	return (join_str);
-}
-/* FOR get next line
+}*/
+/* FOR get next line*/
 char	*ft_strjoin(char *s1, char *s2)
 {
 	char	*joint_str;
@@ -63,4 +63,3 @@ char	*ft_strjoin(char *s1, char *s2)
 	free(s1);
 	return (joint_str);
 }
-*/

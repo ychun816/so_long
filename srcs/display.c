@@ -6,7 +6,7 @@
 /*   By: yilin <yilin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:11:54 by yilin             #+#    #+#             */
-/*   Updated: 2024/08/15 19:14:16 by yilin            ###   ########.fr       */
+/*   Updated: 2024/08/19 20:02:14 by yilin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,16 +54,19 @@ int	load_imgs(t_mlx *data)
 	// Load the image for the floor and store its pointer
 	data->img[FLOOR].ptr = mlx_xpm_file_to_image(data->mlx_ptr, FLOOR_PATH, &i, &i);
 	// Load the image for the exit (state 1) and store its pointer
-	data->img[EXIT1].ptr = mlx_xpm_file_to_image(data->mlx_ptr, EXIT1_PATH, &i, &i);
+	data->img[EXIT].ptr = mlx_xpm_file_to_image(data->mlx_ptr, EXIT_PATH, &i, &i);
 	// Load the image for the exit (state 2) and store its pointer
-	data->img[EXIT2].ptr = mlx_xpm_file_to_image(data->mlx_ptr, EXIT2_PATH, &i, &i);
+	// data->img[EXIT2].ptr = mlx_xpm_file_to_image(data->mlx_ptr, EXIT2_PATH, &i, &i);
 	// Load the image for the coin and store its pointer
 	data->img[COLLECTABLE].ptr = mlx_xpm_file_to_image(data->mlx_ptr, COLLECTABLE_PATH, &i, &i);
 	// Load the images for the player (facing downwards) and store their pointers
-	data->img[PDOWN].ptr = mlx_xpm_file_to_image(data->mlx_ptr, PDOWN_PATH, &i, &i);
+	data->img[PUP].ptr = mlx_xpm_file_to_image(data->mlx_ptr, PUP_PATH, &i, &i);
 	// TBD: player facing right
+	data->img[PDOWN].ptr = mlx_xpm_file_to_image(data->mlx_ptr, PDOWN_PATH, &i, &i);
 	// TBD: player facing upwards
+	data->img[PRIGHT].ptr = mlx_xpm_file_to_image(data->mlx_ptr, PRIGHT_PATH, &i, &i);
 	// TBD: player facing left
+	data->img[PLEFT].ptr = mlx_xpm_file_to_image(data->mlx_ptr, PLEFT_PATH, &i, &i);
 	return (SUCCESS);
 }
 
@@ -93,7 +96,7 @@ void	display_map(t_mlx *data)
 				print_img(data, data->img[PDOWN].ptr, x * BPS, y * BPS);
 			//if 'C' (COLLECTABLE) => print collectable img
 			if (data->map[y][x] == 'E')
-				print_img(data, data->img[EXIT1].ptr, x * BPS, y * BPS);
+				print_img(data, data->img[EXIT].ptr, x * BPS, y * BPS);
 			//if 'E' (EXIT) => print exit img
 			if (data->map[y][x] == 'C')
 				print_img(data, data->img[COLLECTABLE].ptr, x * BPS, y * BPS);
@@ -118,10 +121,10 @@ void	move_player(t_mlx *data)
 	// Synchronize the graphical display
 	mlx_do_sync(data->mlx_ptr);
 	// Check if the player is blocked from moving => return
-	if (is_blocked(data))
+	if (is_pos_blocked(data))
 		return ;
 	// TBD: Run the animation for the player movement
-	// run_player_animation(data, &x, &y, i);
+	run_player_animation(data, &x, &y, i);
 	// Increment and print the move count
 	ft_printf("moves count: %d\n", ++data->moves);
 	// Display the player's current image at the new position
@@ -130,9 +133,9 @@ void	move_player(t_mlx *data)
 	mlx_do_sync(data->mlx_ptr);
 }
 
-//// TBD ////TODO:TODO:TODO:TODO:
-//// run player animation ////
-// Handles the frame-by-frame animation of the player's movement in small steps.
+// //// TBD ////
+// //// run player animation ////
+// // Handles the frame-by-frame animation of the player's movement in small steps.
 void	run_player_animation(t_mlx *data, int *x, int *y, int i)
 {
 	// Loop to perform the animation in small steps

@@ -6,13 +6,13 @@
 /*   By: yilin <yilin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:11:57 by yilin             #+#    #+#             */
-/*   Updated: 2024/08/15 19:11:35 by yilin            ###   ########.fr       */
+/*   Updated: 2024/08/18 20:04:22 by yilin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-int	exit_program(t_mlx	data)
+int	exit_program(t_mlx	*data)
 {
 	int	i;
 	
@@ -21,7 +21,7 @@ int	exit_program(t_mlx	data)
 		exit(EXIT_FAILURE);//return 0?
 	// If the map exists in the data, free the map function.
 	if (data)
-		free_strs(&data); //char **strs //ft_freetab(data->map, TRUE);
+		free_strs(data->map, TRUE); //char **strs //ft_freetab(data->map, TRUE);
 	// Loop through all the images (SPRITES_NB is the number of images).
 	i = 0;
 	while (i < SPRITES_NB)
