@@ -6,7 +6,7 @@
 #    By: yilin <yilin@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/18 16:57:59 by yilin             #+#    #+#              #
-#    Updated: 2024/08/19 17:44:12 by yilin            ###   ########.fr        #
+#    Updated: 2024/08/22 14:27:05 by yilin            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ MLX_DIR = mlx_linux
 #                              SRC & OBJ FILES                                 #
 # **************************************************************************** #
 
-SRCS = $(addprefix $(SRCS_DIR)/, checkers.c  cleanup.c  display.c  exit_program.c  helper_functions.c  so_long.c)
+SRCS = $(addprefix $(SRCS_DIR)/, checkers.c  dfs.c cleanup.c  display.c  exit_program.c  helper_functions.c  so_long.c)
 OBJS = $(SRCS:$(SRCS_DIR)/%.c=$(OBJS_DIR)/%.o)
 
 # **************************************************************************** #
