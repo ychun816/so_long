@@ -6,7 +6,7 @@
 /*   By: yilin <yilin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:11:51 by yilin             #+#    #+#             */
-/*   Updated: 2024/08/23 22:08:11 by yilin            ###   ########.fr       */
+/*   Updated: 2024/08/23 22:55:53 by yilin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,7 +215,7 @@ bool is_path_valid(char **map, t_check *content)
 	ft_dfs(content->dfs_map, pos >> 32, pos & 0xFFFFFFFF, "0PCV", content);
 	// test_display_dfsmap(content->dfs_map);//DEBUG
 	if (!is_valid_after_dfs(content))
-		return (FALSE);
+		return (free_strs(content->dfs_map, 1), FALSE);
 	row = 0;
 	while (row < n_rows)
 	{
