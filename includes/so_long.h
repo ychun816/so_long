@@ -6,7 +6,7 @@
 /*   By: yilin <yilin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 14:03:22 by yilin             #+#    #+#             */
-/*   Updated: 2024/08/22 20:11:12 by yilin            ###   ########.fr       */
+/*   Updated: 2024/08/23 16:21:53 by yilin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ typedef struct s_mlx
 	int	p_dir;//player's direction
 	int	left_cakes;//Number of coins left to collect
 	int	moves;
+	// int p_prex;
+	// int	p_prey;
 }	t_mlx;
 
 /*structure for check*/
@@ -145,5 +147,5 @@ long	get_xy(char** map, char element);
 int	print_img(t_mlx	*data, void *img_ptr, int x, int y);
 char **ft_arraydup(char **array);
 char	**ft_strsjoin(char const **strs, char *last_str, int free_strs, int free_str);
-void	test_display_map(t_mlx *data);
+// void	test_display_map(t_mlx *data);
 #endif

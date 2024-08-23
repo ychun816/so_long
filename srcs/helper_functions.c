@@ -6,7 +6,7 @@
 /*   By: yilin <yilin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 16:28:32 by yilin             #+#    #+#             */
-/*   Updated: 2024/08/22 21:24:12 by yilin            ###   ########.fr       */
+/*   Updated: 2024/08/23 16:20:26 by yilin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,15 +147,16 @@ char	**ft_strsjoin(char const **strs, char *last_str, int strs_2free, int str_2f
 }
 
 /*FOR TEST || print map*/
-void	test_display_map(t_mlx *data)
-{
-	int i = 0;
-	while (data->map[i])
-	{
-		printf("%s", data->map[i]);
-		i++;
-	}
-}
+// void	test_display_map(t_mlx *data)
+// {
+// 	int i = 0;
+// 	while (data->map[i])
+// 	{
+// 		ft_printf("%s", data->map[i]);
+// 		i++;
+// 	}
+// 	ft_printf("\n", data->map[i]);
+// }
 
 /*FOR TEST 2*/
 // int key_press(int keycode, void *param)

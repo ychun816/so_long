@@ -6,7 +6,7 @@
 /*   By: yilin <yilin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:11:51 by yilin             #+#    #+#             */
-/*   Updated: 2024/08/22 20:20:14 by yilin            ###   ########.fr       */
+/*   Updated: 2024/08/23 15:01:21 by yilin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ bool is_map_valid(char **map, char *file_name, t_mlx *data)
 	if (!is_elements_valid(map, &content))
 		return (ft_putstr_fd("Elements invalid\n", STDERR_FILENO), FALSE);
 	data->left_cakes = content.count_cakes;
+	//if !is_line_valid TODO:TODO:TODO:
 	if (!is_path_valid(map, &content))
 		return (ft_putstr_fd("Path Invalid\n", STDERR_FILENO), FALSE);
 	return (TRUE);
@@ -158,36 +159,95 @@ bool	is_line_valid(char **line, int y, int wall)
 	int	x;
 
 	x = 0;
-
 	if (line[y][x] != '1')
-		return (FALSE);
-	if (wall)
+		return (FALSE);//0
+	while (line[y][++x] && wall)
 	{
-		while (line[y][++x])
-		{
-			if (line[y][x] != '1')
-				return (FALSE);
-			if (line[y][x + 1] == '\n' || line[y][x + 1] == '\0')
-				return (TRUE);
-		}
+		if (line[y][x] != '1')
+			return (FALSE);//0
+		if (line[y][x + 1] == '\n' || line[y][x + 1] == '\0')//last pos
+			return (TRUE);//1
 	}
-	else
+	while (line[y][++x] && !wall)
 	{
-		while (line[y][++x])
-		{
-			if (line[y][x] == '1' && (line[y][x + 1] != '\n' && line[y][x + 1] != '\0'))
-				x++;
-			if (line[y][x] == 'C' || 
-			(line[y][x] == 'E' 
-			&& (line[y][x + 1] != '~' && line[y][x + 1] != '1')
-			&& (line[y][x - 1] != '~' && line[y][x - 1] != '1')
-			&& (line[y - 1][x] != '~' && line[y - 1][x] != '1')
-			&& (line[y + 1][x] != '~' && line[y + 1][x] != '1')))
-				return (FALSE);
-		}
+		if (line[y][x] == '1' && line[y][x + 1] != '\n')
+			x++;
+		if (line[y][x] == '1' && line[y][x + 1] == '\n')
+			return (TRUE);//1
+		if (line[y][x] == 'C'
+			|| ((line[y][x] == 'E' && line[y][x + 1] != '~')
+			&& (line[y][x] == 'E' && line[y][x - 1] != '~')
+			&& (line[y][x] == 'E' && line[y - 1][x] != '~')
+			&& (line[y][x] == 'E' && line[y + 1][x] != '~')))
+			return (FALSE);//0
 	}
-	return (TRUE);
+	return (FALSE);//0
 }
+// bool	is_line_valid(char **line, int i, int wall)
+// {
+// 	int	j;
+
+// 	j = 0;
+// 	if (line[i][j] != '1')
+// 		return (FALSE);//0
+// 	while (line[i][++j] && wall)
+// 	{
+// 		if (line[i][j] != '1')
+// 			return (FALSE);//0
+// 		if (line[i][j + 1] == '\n' || line[i][j + 1] == '\0')//last pos
+// 			return (TRUE);//1
+// 	}
+// 	while (line[i][++j] && !wall)
+// 	{
+// 		if (line[i][j] == '1' && line[i][j + 1] != '\n')
+// 			j++;
+// 		if (line[i][j] == '1' && line[i][j + 1] == '\n')
+// 			return (TRUE);//1
+// 		if (line[i][j] == 'C'
+// 			|| ((line[i][j] == 'E' && line[i][j + 1] != '~')
+// 			&& (line[i][j] == 'E' && line[i][j - 1] != '~')
+// 			&& (line[i][j] == 'E' && line[i - 1][j] != '~')
+// 			&& (line[i][j] == 'E' && line[i + 1][j] != '~')))
+// 			return (FALSE);//0
+// 	}
+// 	return (FALSE);//0
+// }
+
+// bool	is_line_valid(char **line, int y, int wall)
+// {
+// 	int	x;
+
+// 	x = 0;
+
+// 	if (line[y][x] != '1')
+// 		return (FALSE);
+// 	if (wall)
+// 	{
+// 		while (line[y][++x])
+// 		{
+// 			if (line[y][x] != '1')
+// 				return (FALSE);
+// 			if (line[y][x + 1] == '\n' || line[y][x + 1] == '\0')
+// 				return (TRUE);
+// 		}
+// 	}
+// 	else
+// 	{
+// 		while (line[y][++x])
+// 		{
+// 			if (line[y][x] == '1' && (line[y][x + 1] != '\n' && line[y][x + 1] != '\0'))
+// 				x++;
+// 			if (line[y][x] == 'C' || 
+// 			(line[y][x] == 'E' 
+// 			&& (line[y][x + 1] != '~' && line[y][x + 1] != '1')
+// 			&& (line[y][x - 1] != '~' && line[y][x - 1] != '1')
+// 			&& (line[y - 1][x] != '~' && line[y - 1][x] != '1')
+// 			&& (line[y + 1][x] != '~' && line[y + 1][x] != '1')))
+// 				return (FALSE);
+// 		}
+// 	}
+// 	return (TRUE);
+// }
 
 /** //is path valid
  * @param row Index variable for iterating over the rows of the map

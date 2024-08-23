@@ -6,7 +6,7 @@
 /*   By: yilin <yilin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:11:54 by yilin             #+#    #+#             */
-/*   Updated: 2024/08/22 21:15:42 by yilin            ###   ########.fr       */
+/*   Updated: 2024/08/23 15:44:05 by yilin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,18 +138,18 @@ void	move_n_track_player(t_mlx *data)
 	int	x;
 	int	y;
 	int	i;
-	
+
 	i = 0;
 	x = data->p_x * BPS;
 	y = data->p_y * BPS;
 	print_img(data, data->img[data->p_dir].ptr, x, y);
-
 	mlx_do_sync(data->mlx_ptr);
 	if (is_pos_blocked(data))
 		return ;
 	animate_player(data, &x, &y, i);
 	ft_printf("moves count: %d\n", ++data->moves);
 	print_img(data, data->img[data->p_dir].ptr, x, y);
+	// load_imgs(data);
 	mlx_do_sync(data->mlx_ptr);
 }
 

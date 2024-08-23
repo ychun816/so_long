@@ -6,7 +6,7 @@
 /*   By: yilin <yilin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 18:21:31 by yilin             #+#    #+#             */
-/*   Updated: 2024/08/22 21:39:48 by yilin            ###   ########.fr       */
+/*   Updated: 2024/08/23 16:22:35 by yilin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,11 @@ int	handle_keypress(int keyboard, t_mlx *data)
  */
 void	check_n_move_player(t_mlx *data, int pos)
 {
+	// int	x;
+	// int	y;
+	
+	// x = get_xy();
+	// y = get_xy();
 	data->p_dir = pos;
 	if (data->p_dir == PUP && !is_pos_blocked(data))
 		update_map(data, -1, 0);
@@ -63,9 +68,10 @@ void	check_n_move_player(t_mlx *data, int pos)
 		update_map(data, 1, 0);
 	else if (data->p_dir == PRIGHT && !is_pos_blocked(data))
 		update_map(data, 0, 1);
-
 	else if (data->p_dir == PLEFT && !is_pos_blocked(data))
 		update_map(data, 0, -1);
+	// if (data->map[(data->p_y) + y][(data->p_x) + x] == '0')
+	// 	print_img(data, data->img[FLOOR].ptr, x * BPS, y * BPS);
 	move_n_track_player(data);
 }
 
@@ -123,7 +129,7 @@ void	update_map(t_mlx *data, int y, int x)
 		print_img(data, data->img[EXIT2].ptr, (exit & 0xFFFFFFFF) * BPS, (exit >> 32) * BPS);
 		mlx_do_sync(data->mlx_ptr);
 	}
-	else if (data->left_cakes == 0 && data->map[(data->p_y) + y][(data->p_x) + x] == 'E') //data->left_cakes == 0 && 
+	if (data->left_cakes == 0 && data->map[(data->p_y) + y][(data->p_x) + x] == 'E')//data->left_cakes == 0 && (data->p_y) + y][(data->p_x) + x] == 'E'  
 	{
 		ft_printf("You won! You collected all the cake in %d moves!\n", data->moves);
 		exit_program(data);
@@ -150,9 +156,8 @@ char	**read_n_set_map(int fd)
 {
 	char	**result;
 	char	*line;
-	
 
-	if (fd < 0)
+	if (fd < 0)//|| fd != -1
 		return (NULL);
 	line = get_next_line(fd);
 	if (!line)
@@ -205,7 +210,7 @@ int	main(int ac, char **av)
 
 	fd = open(av[1], O_RDONLY);
 	data = (t_mlx){NULL, NULL, {{NULL, NULL, 0, 0, 0}}, read_n_set_map(fd), 0, 0, 0, 0, 0, 0, 0};
-	test_display_map(&data); //debug
+	// test_display_map(&data); //debug
 	if (!is_map_valid(data.map, av[1], &data) || ac <= 1)
 		return(exit_program(&data), FAILURE);
 	// test_display_map(&data); //debug
