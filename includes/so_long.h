@@ -6,7 +6,7 @@
 /*   By: yilin <yilin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 14:03:22 by yilin             #+#    #+#             */
-/*   Updated: 2024/08/23 16:21:53 by yilin            ###   ########.fr       */
+/*   Updated: 2024/08/23 22:04:52 by yilin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,8 @@ typedef struct s_mlx
 	int	p_dir;//player's direction
 	int	left_cakes;//Number of coins left to collect
 	int	moves;
-	// int p_prex;
-	// int	p_prey;
+	int p_prevx;
+	int	p_prevy;
 }	t_mlx;
 
 /*structure for check*/
@@ -94,6 +94,7 @@ typedef struct s_check
 	int	count_player;//Number of player start positions
 	int	count_exit;//Number of exits
 	int	count_cakes;//Number of collectibles
+	int count_villains;
 	char	**dfs_map;//2D array used for depth-first search, possibly for pathfinding or validation.
 } t_check;
 
@@ -139,7 +140,7 @@ int	free_all(int mode, ...);
 
 /*dfs*/
 void	ft_dfs(char **map, int y, int x, char *notwalls, t_check *content);
-// bool	is_valid_after_dfs(t_check *content);
+bool	is_valid_after_dfs(t_check *content);
 
 /*HELPER FUNC*/
 size_t	ft_arraylen(const char **arrays);
@@ -147,5 +148,7 @@ long	get_xy(char** map, char element);
 int	print_img(t_mlx	*data, void *img_ptr, int x, int y);
 char **ft_arraydup(char **array);
 char	**ft_strsjoin(char const **strs, char *last_str, int free_strs, int free_str);
-// void	test_display_map(t_mlx *data);
+void	check_imgs_valid(t_mlx *data);
+void	test_display_map(t_mlx *data);
+void	test_display_dfsmap(char **map);
 #endif

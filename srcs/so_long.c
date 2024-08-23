@@ -6,7 +6,7 @@
 /*   By: yilin <yilin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 18:21:31 by yilin             #+#    #+#             */
-/*   Updated: 2024/08/23 16:22:35 by yilin            ###   ########.fr       */
+/*   Updated: 2024/08/23 22:18:58 by yilin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,11 @@ int	handle_keypress(int keyboard, t_mlx *data)
  */
 void	check_n_move_player(t_mlx *data, int pos)
 {
-	// int	x;
-	// int	y;
-	
-	// x = get_xy();
-	// y = get_xy();
+	int	p_prevy;
+	int	p_prevx;
+
+	p_prevy = data->p_y;
+	p_prevx = data->p_x;
 	data->p_dir = pos;
 	if (data->p_dir == PUP && !is_pos_blocked(data))
 		update_map(data, -1, 0);
@@ -70,8 +70,8 @@ void	check_n_move_player(t_mlx *data, int pos)
 		update_map(data, 0, 1);
 	else if (data->p_dir == PLEFT && !is_pos_blocked(data))
 		update_map(data, 0, -1);
-	// if (data->map[(data->p_y) + y][(data->p_x) + x] == '0')
-	// 	print_img(data, data->img[FLOOR].ptr, x * BPS, y * BPS);
+	// else if (data->map[data->p_prevy][data->p_prevx] == '0')
+	// print_img(data, data->img[FLOOR].ptr, p_prevx * BPS, p_prevy * BPS);
 	move_n_track_player(data);
 }
 
@@ -89,6 +89,37 @@ void	check_n_move_player(t_mlx *data, int pos)
 void	update_map(t_mlx *data, int y, int x)
 {
 	long	exit;
+
+	if (data->map[(data->p_y) + y][(data->p_x) + x] == 'V')
+	{
+		ft_printf("💀💀 AHHH U DEAD!!💀💀\n");
+		exit_program(data);
+	}
+	if (data->map[(data->p_y) + y][(data->p_x) + x] == 'C')
+	{
+		data->left_cakes--;
+		ft_printf("CAKE COLLECTED 🍰 %d CAKES LEFT!\n", data->left_cakes);
+		//printf("after left_cakes: %d\n", data->left_cakes);
+	}
+	exit = get_xy(data->map, 'E');
+	if (data->left_cakes == 0)//exit_open // && exit != -1
+	{
+		data->map[exit >> 32][exit & 0xFFFFFFFF] = 'E';
+		print_img(data, data->img[EXIT2].ptr, (exit & 0xFFFFFFFF) * BPS, (exit >> 32) * BPS);
+		mlx_do_sync(data->mlx_ptr);
+	}
+	if (data->left_cakes == 0 && data->map[(data->p_y) + y][(data->p_x) + x] == 'E')//data->left_cakes == 0 && (data->p_y) + y][(data->p_x) + x] == 'E'  
+	{
+		ft_printf("🎖️ YOU WON!!🎖️ You ate all the cakes in %d moves!\n", data->moves);
+		exit_program(data);
+	}
+	data->map[(data->p_y) + y][(data->p_x) + x] = 'P';
+	data->map[data->p_y][data->p_x] = '0';
+	// if (data->map[data->p_y][data->p_x] == '0')
+	print_img(data, data->img[FLOOR].ptr, data->p_x * BPS, data->p_y * BPS);
+	// data->p_y += y;
+	// data->p_x += x;
+}
 	// static int i;
 	
 	// if (data->p_y + y < 0 || data->p_y + y >= data->height ||  data->p_x + x < 0 || data->p_x + x >= data->width) 
@@ -96,12 +127,6 @@ void	update_map(t_mlx *data, int y, int x)
     //     ft_printf("Out of bounds: new_y=%d, new_x=%d\n", data->p_y + y, data->p_x + x);
     //     return; // Exit the function to prevent out-of-bounds access
 	// }
-	if (data->map[(data->p_y) + y][(data->p_x) + x] == 'C')
-	{
-		ft_printf("cake collected!\n");
-		data->left_cakes--;
-		printf("after left_cakes: %d\n", data->left_cakes);
-	}
 	// printf("TEST %i", i);
 	// printf("data->left cakes ---> %i\n", data->left_cakes);
 	// test_display_map(data);
@@ -117,26 +142,6 @@ void	update_map(t_mlx *data, int y, int x)
 	// printf("\n\n");
 	// printf("data->p_y ---> %i  y ---> %i\ndata->p_x ---> %i  x ---> %i", data->p_y, y, data->p_x, x);
 	// printf("\n\n");
-	exit = get_xy(data->map, 'E');
-	// if (exit == -1) 
-	// {
-    //     ft_printf("Exit not found\n");
-    //     return; // Handle the case where the exit is not found
-    // }
-	if (data->left_cakes == 0)//exit_open // && exit != -1
-	{
-		data->map[exit >> 32][exit & 0xFFFFFFFF] = 'E';
-		print_img(data, data->img[EXIT2].ptr, (exit & 0xFFFFFFFF) * BPS, (exit >> 32) * BPS);
-		mlx_do_sync(data->mlx_ptr);
-	}
-	if (data->left_cakes == 0 && data->map[(data->p_y) + y][(data->p_x) + x] == 'E')//data->left_cakes == 0 && (data->p_y) + y][(data->p_x) + x] == 'E'  
-	{
-		ft_printf("You won! You collected all the cake in %d moves!\n", data->moves);
-		exit_program(data);
-	}
-	data->map[(data->p_y) + y][(data->p_x) + x] = 'P';
-	data->map[data->p_y][data->p_x] = '0';
-}
 
 //read_n_set_map
 /**
@@ -209,7 +214,7 @@ int	main(int ac, char **av)
 	int	fd;
 
 	fd = open(av[1], O_RDONLY);
-	data = (t_mlx){NULL, NULL, {{NULL, NULL, 0, 0, 0}}, read_n_set_map(fd), 0, 0, 0, 0, 0, 0, 0};
+	data = (t_mlx){NULL, NULL, {{NULL, NULL, 0, 0, 0}}, read_n_set_map(fd), 0, 0, 0, 0, 0, 0, 0, 0, 0};
 	// test_display_map(&data); //debug
 	if (!is_map_valid(data.map, av[1], &data) || ac <= 1)
 		return(exit_program(&data), FAILURE);

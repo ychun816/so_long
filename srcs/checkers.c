@@ -6,7 +6,7 @@
 /*   By: yilin <yilin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:11:51 by yilin             #+#    #+#             */
-/*   Updated: 2024/08/23 15:01:21 by yilin            ###   ########.fr       */
+/*   Updated: 2024/08/23 22:08:11 by yilin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,10 @@ bool is_map_valid(char **map, char *file_name, t_mlx *data)
 		return (ft_putstr_fd("Map too small (less than 3 lines)\n", STDERR_FILENO), FALSE);
 	else if (!is_map_rectangle(map))
 		return (ft_putstr_fd("Map is not rectangular\n", STDERR_FILENO), FALSE);
-	content = (t_check){0, 0, 0, NULL};
+	content = (t_check){0, 0, 0, 0, NULL};
 	if (!is_elements_valid(map, &content))
 		return (ft_putstr_fd("Elements invalid\n", STDERR_FILENO), FALSE);
 	data->left_cakes = content.count_cakes;
-	//if !is_line_valid TODO:TODO:TODO:
 	if (!is_path_valid(map, &content))
 		return (ft_putstr_fd("Path Invalid\n", STDERR_FILENO), FALSE);
 	return (TRUE);
@@ -133,7 +132,9 @@ bool	is_elements_valid(char **map, t_check *content)
 				content->count_exit++;
 			if (map[y][x] == 'C')
 				content->count_cakes++;
-			if (map[y][x] != '1' && map[y][x] != '0' && map[y][x] != 'P'
+			if (map[y][x] == 'V')
+				content->count_villains++;
+			if (map[y][x] != 'V' && map[y][x] != '1' && map[y][x] != '0' && map[y][x] != 'P'
 				&& map[y][x] != 'E' && map[y][x] != 'C' && map[y][x] != '\n')
 				return (FALSE);//(0)
 		}
@@ -183,71 +184,6 @@ bool	is_line_valid(char **line, int y, int wall)
 	}
 	return (FALSE);//0
 }
-// bool	is_line_valid(char **line, int i, int wall)
-// {
-// 	int	j;
-
-// 	j = 0;
-// 	if (line[i][j] != '1')
-// 		return (FALSE);//0
-// 	while (line[i][++j] && wall)
-// 	{
-// 		if (line[i][j] != '1')
-// 			return (FALSE);//0
-// 		if (line[i][j + 1] == '\n' || line[i][j + 1] == '\0')//last pos
-// 			return (TRUE);//1
-// 	}
-// 	while (line[i][++j] && !wall)
-// 	{
-// 		if (line[i][j] == '1' && line[i][j + 1] != '\n')
-// 			j++;
-// 		if (line[i][j] == '1' && line[i][j + 1] == '\n')
-// 			return (TRUE);//1
-// 		if (line[i][j] == 'C'
-// 			|| ((line[i][j] == 'E' && line[i][j + 1] != '~')
-// 			&& (line[i][j] == 'E' && line[i][j - 1] != '~')
-// 			&& (line[i][j] == 'E' && line[i - 1][j] != '~')
-// 			&& (line[i][j] == 'E' && line[i + 1][j] != '~')))
-// 			return (FALSE);//0
-// 	}
-// 	return (FALSE);//0
-// }
-
-// bool	is_line_valid(char **line, int y, int wall)
-// {
-// 	int	x;
-
-// 	x = 0;
-
-// 	if (line[y][x] != '1')
-// 		return (FALSE);
-// 	if (wall)
-// 	{
-// 		while (line[y][++x])
-// 		{
-// 			if (line[y][x] != '1')
-// 				return (FALSE);
-// 			if (line[y][x + 1] == '\n' || line[y][x + 1] == '\0')
-// 				return (TRUE);
-// 		}
-// 	}
-// 	else
-// 	{
-// 		while (line[y][++x])
-// 		{
-// 			if (line[y][x] == '1' && (line[y][x + 1] != '\n' && line[y][x + 1] != '\0'))
-// 				x++;
-// 			if (line[y][x] == 'C' || 
-// 			(line[y][x] == 'E' 
-// 			&& (line[y][x + 1] != '~' && line[y][x + 1] != '1')
-// 			&& (line[y][x - 1] != '~' && line[y][x - 1] != '1')
-// 			&& (line[y - 1][x] != '~' && line[y - 1][x] != '1')
-// 			&& (line[y + 1][x] != '~' && line[y + 1][x] != '1')))
-// 				return (FALSE);
-// 		}
-// 	}
-// 	return (TRUE);
-// }
 
 /** //is path valid
  * @param row Index variable for iterating over the rows of the map
@@ -266,6 +202,7 @@ bool	is_line_valid(char **line, int y, int wall)
  * @return if it's NOT the first or last line -> valid => free memory + return TRUE
  * 
 */
+
 bool is_path_valid(char **map, t_check *content)
 {
 	size_t	row;
@@ -274,9 +211,11 @@ bool is_path_valid(char **map, t_check *content)
 
 	pos = get_xy(map, 'P');
 	content->dfs_map = ft_arraydup(map);
-	// display(content->dfs_map);
 	n_rows = ft_arraylen((const char **)content->dfs_map);
-	ft_dfs(content->dfs_map, pos >> 32, pos & 0xFFFFFFFF, "0PC", content);
+	ft_dfs(content->dfs_map, pos >> 32, pos & 0xFFFFFFFF, "0PCV", content);
+	// test_display_dfsmap(content->dfs_map);//DEBUG
+	if (!is_valid_after_dfs(content))
+		return (FALSE);
 	row = 0;
 	while (row < n_rows)
 	{
@@ -288,7 +227,6 @@ bool is_path_valid(char **map, t_check *content)
     }
 	return (free_strs(content->dfs_map, 1), TRUE);
 }
-
 /*
 pos >> 32: This extracts the y coordinate of the player’s position.
 

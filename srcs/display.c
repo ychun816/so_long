@@ -6,7 +6,7 @@
 /*   By: yilin <yilin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:11:54 by yilin             #+#    #+#             */
-/*   Updated: 2024/08/23 15:44:05 by yilin            ###   ########.fr       */
+/*   Updated: 2024/08/23 22:10:12 by yilin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ int	load_imgs(t_mlx *data)
 	int	i;
 
 	i = 0;
+	if (!data)
+		return (0);
 	// Load the image for the wall and store its pointer
 	data->img[WALL].ptr = mlx_xpm_file_to_image(data->mlx_ptr, WALL_PATH, &i, &i);
 	// Load the image for the floor and store its pointer
@@ -74,6 +76,9 @@ int	load_imgs(t_mlx *data)
 	data->img[PRIGHT].ptr = mlx_xpm_file_to_image(data->mlx_ptr, PRIGHT_PATH, &i, &i);
 	// TBD: player facing left
 	data->img[PLEFT].ptr = mlx_xpm_file_to_image(data->mlx_ptr, PLEFT_PATH, &i, &i);
+	//VILLAIN
+	data->img[VILLAIN].ptr = mlx_xpm_file_to_image(data->mlx_ptr, VILLAIN_PATH, &i, &i);
+	check_imgs_valid(data);
 	return (SUCCESS);
 }
 
@@ -108,6 +113,9 @@ void	init_map(t_mlx *data)
 			//if 'C' (CAKE) => print cake img
 			if (data->map[y][x] == 'C')
 				print_img(data, data->img[CAKE].ptr, x * BPS, y * BPS);
+			//if 'V' (VILLAIN) => print Villain img
+			if (data->map[y][x] == 'V')
+				print_img(data, data->img[VILLAIN].ptr, x * BPS, y * BPS);
 			//if 'E' (EXIT) => print exit img
 			if (data->map[y][x] == 'E')
 				print_img(data, data->img[EXIT].ptr, x * BPS, y * BPS);
@@ -149,7 +157,6 @@ void	move_n_track_player(t_mlx *data)
 	animate_player(data, &x, &y, i);
 	ft_printf("moves count: %d\n", ++data->moves);
 	print_img(data, data->img[data->p_dir].ptr, x, y);
-	// load_imgs(data);
 	mlx_do_sync(data->mlx_ptr);
 }
 

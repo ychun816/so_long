@@ -6,7 +6,7 @@
 /*   By: yilin <yilin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 16:28:32 by yilin             #+#    #+#             */
-/*   Updated: 2024/08/23 16:20:26 by yilin            ###   ########.fr       */
+/*   Updated: 2024/08/23 22:03:57 by yilin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,30 @@ char	**ft_strsjoin(char const **strs, char *last_str, int strs_2free, int str_2f
 	return (result);
 }
 
+void	check_imgs_valid(t_mlx *data)
+{
+	if (!data->img[WALL].ptr)
+		(ft_putstr_fd("Error Loading img: WALL\n", STDERR_FILENO), exit(EXIT_FAILURE));
+	if (!data->img[FLOOR].ptr)
+		(ft_putstr_fd("Error Loading img: FLOOR\n", STDERR_FILENO), exit(EXIT_FAILURE));
+	if (!data->img[EXIT].ptr)
+		(ft_putstr_fd("Error Loading img: EXIT\n", STDERR_FILENO), exit(EXIT_FAILURE));
+	if (!data->img[EXIT2].ptr)
+		(ft_putstr_fd("Error Loading img: OPEN EXIT (EXIT2)\n", STDERR_FILENO), exit(EXIT_FAILURE));
+	if (!data->img[CAKE].ptr)
+		(ft_putstr_fd("Error Loading img: CAKE\n", STDERR_FILENO), exit(EXIT_FAILURE));
+	if (!data->img[PUP].ptr)
+		(ft_putstr_fd("Error Loading img: PUP\n", STDERR_FILENO), exit(EXIT_FAILURE));
+	if (!data->img[PDOWN].ptr)
+		(ft_putstr_fd("Error Loading img: PDOWN\n", STDERR_FILENO), exit(EXIT_FAILURE));
+	if (!data->img[PRIGHT].ptr)
+		(ft_putstr_fd("Error Loading img: PRIGHT\n", STDERR_FILENO), exit(EXIT_FAILURE));
+	if (!data->img[PLEFT].ptr)
+		(ft_putstr_fd("Error Loading img: PLEFT\n", STDERR_FILENO), exit(EXIT_FAILURE));
+	if (!data->img[VILLAIN].ptr)
+		(ft_putstr_fd("Error Loading img: VILLAIN\n", STDERR_FILENO), exit(EXIT_FAILURE));
+}
+
 /*FOR TEST || print map*/
 // void	test_display_map(t_mlx *data)
 // {
@@ -158,7 +182,15 @@ char	**ft_strsjoin(char const **strs, char *last_str, int strs_2free, int str_2f
 // 	ft_printf("\n", data->map[i]);
 // }
 
-/*FOR TEST 2*/
+/*FOR TEST 2 DFS MAP*/
+// void	test_display_dfsmap(char **map)
+// {
+// 	int i = 0;
+// 	while (map[i])
+// 		printf("%s", map[i++]);
+// }
+
+/*FOR TEST 3*/
 // int key_press(int keycode, void *param)
 // {
 //     (void)param;

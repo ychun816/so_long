@@ -6,7 +6,7 @@
 /*   By: yilin <yilin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 17:08:01 by yilin             #+#    #+#             */
-/*   Updated: 2024/08/23 15:43:04 by yilin            ###   ########.fr       */
+/*   Updated: 2024/08/23 22:07:38 by yilin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ void	ft_dfs(char **map, int y, int x, char *notwalls, t_check *content)
 
 	rowlen = ft_strlen(*map);
 	n_rows = ft_arraylen((const char **)map);
+	if (map[y][x] == 'E')
+		map[y][x] = '~';
 	if (y < 0 || y >= n_rows || x < 0 || x >= rowlen
         || !ft_strchr(notwalls, map[y][x]) || map[y][x] == '~')
         return ;
@@ -54,20 +56,20 @@ void	ft_dfs(char **map, int y, int x, char *notwalls, t_check *content)
 }
 
 // //// check after floodfill ////
-// bool	is_valid_after_dfs(t_check *content)
-// {
-// 	int	y;
-// 	int	x;
-// a
-// 	y = -1;
-// 	while (content->dfs_map[++y])
-// 	{
-// 		x = -1;
-// 		while (content->dfs_map[y][++x])
-// 		{
-// 			if (content->dfs_map[y][x] == 'P' || content->dfs_map[y][x] == 'C' || content->dfs_map[y][x] == 'E')
-// 				return (TRUE);//'P', 'C', or 'E' found
-// 		}
-// 	}
-// 	return (FALSE);// NONE of 'P', 'C', or 'E' found
-// }
+bool	is_valid_after_dfs(t_check *content)
+{
+	int	y;
+	int	x;
+
+	y = -1;
+	while (content->dfs_map[++y])
+	{
+		x = -1;
+		while (content->dfs_map[y][++x])
+		{
+			if (content->dfs_map[y][x] == 'V' || content->dfs_map[y][x] == 'P' || content->dfs_map[y][x] == 'C' || content->dfs_map[y][x] == 'E')
+				return (FALSE);//'P', 'C', or 'E' found
+		}
+	}
+	return (TRUE);// NONE of 'P', 'C', or 'E' found
+}
