@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   dfs.c                                              :+:      :+:    :+:   */
+/*   dfs_bonus.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yilin <yilin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 17:08:01 by yilin             #+#    #+#             */
-/*   Updated: 2024/08/29 16:37:23 by yilin            ###   ########.fr       */
+/*   Updated: 2024/09/03 18:08:21 by yilin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@
  * 
  * @note Only a valid starting position will fill the paths.
  */
-
 int check_e = 0;
 void	ft_dfs(char **map, t_dfs pos, char *notwalls, t_check *content)
 {
@@ -43,11 +42,20 @@ void	ft_dfs(char **map, t_dfs pos, char *notwalls, t_check *content)
 
 	rowlen = ft_strlen(*map);
 	n_rows = ft_arraylen((const char **)map);
-	if (map[pos.y][pos.x] == 'E')
-		check_e = 1;
 	if (pos.y < 0 || pos.y >= n_rows || pos.x < 0 || pos.x >= rowlen
-		|| map[pos.y][pos.x] == '1' || map[pos.y][pos.x] == '~' ||  map[pos.y][pos.x] == 'E')
+		|| map[pos.y][pos.x] == '1' || map[pos.y][pos.x] == '~')
 		return ;
+	if (map[pos.y][pos.x] == 'C')
+	{
+		map[pos.y][pos.x] = '~';
+		content->count_cakes--;
+	}
+	if (map[pos.y][pos.x] == 'E')
+	{
+		map[pos.y][pos.x] = 'E';
+		if (content->count_cakes != 0)
+			return ;
+	}
 	if (map[pos.y][pos.x] != 'P')
 		map[pos.y][pos.x] = '~';
 	ft_dfs(map, (t_dfs){pos.y - 1, pos.x}, notwalls, content);
@@ -70,9 +78,32 @@ bool	is_valid_after_dfs(t_check *content)
 		{
 			if (content->dfs_map[y][x] == 'C')
 				return (FALSE);
-			if (content->count_exit != 1 || check_e != 1)
+			if (content->dfs_map[y][x] == 'E')
 				return (FALSE);
 		}
 	}
 	return (TRUE);
 }
+/*OG
+void	ft_dfs(char **map, t_dfs pos, char *notwalls, t_check *content)
+{
+	int	rowlen;
+	int	n_rows;
+
+	rowlen = ftcheck_e_strlen(*map);
+	n_rows = ft_arraylen((const char **)map);
+	if (map[pos.y][pos.x] == 'E')
+		map[pos.y][pos.x] = 'E';
+	if (pos.y < 0 || pos.y >= n_rows || pos.x < 0 || pos.x >= rowlen
+		|| !ft_strchr(notwalls, map[pos.y][pos.x]) || map[pos.y][pos.x] == '~')//0PC->EV1
+		return ;
+	if (map[pos.y][pos.x] == 'C')
+		map[pos.y][pos.x] = '~';
+		content->count_cakes--;
+	}
+	map[pos.y][pos.x] = '~';
+	ft_dfs(map, (t_dfs){pos.y - 1, pos.x}, notwalls, content);
+	ft_dfs(map, (t_dfs){pos.y + 1, pos.x}, notwalls, content);
+	ft_dfs(map, (t_dfs){pos.y, pos.x + 1}, notwalls, content);
+	ft_dfs(map, (t_dfs){pos.y, pos.x - 1}, notwalls, content);
+}*/

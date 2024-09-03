@@ -6,7 +6,7 @@
 /*   By: yilin <yilin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:00:05 by yilin             #+#    #+#             */
-/*   Updated: 2024/08/23 21:59:38 by yilin            ###   ########.fr       */
+/*   Updated: 2024/08/27 19:49:32 by yilin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,50 +41,20 @@
 # define PLEFT 8
 # define VILLAIN 9
 
-/*REF
-# define SPRITES_NB 17
-
-# define WALL 0
-# define FLOOR 1
-# define EXIT1 2
-# define EXIT2 3
-# define COIN 4
-
-// player facing down
-# define PDOWN 5
-# define PDOWN1 6
-# define PDOWN2 7
-
-// player facing right
-# define PRIGHT 8
-# define PRIGHT1 9
-# define PRIGHT2 10
-
-// player facing up
-# define PUP 11
-# define PUP1 12
-# define PUP2 13
-
-// player facing left
-# define PLEFT 14
-# define PLEFT1 15
-# define PLEFT2 16
-*/
-
 /* ************************************************************************** */
 /*                                     PATHS                                  */
 /* ************************************************************************** */
-//example
-# define WALL_PATH "sprites/wall.xpm"
-# define FLOOR_PATH "sprites/floor.xpm"
-# define EXIT_PATH "sprites/exit.xpm"
-# define EXIT2_PATH "sprites/exit2.xpm"
-# define CAKE_PATH "sprites/collectable.xpm"
-# define PUP_PATH "sprites/pup.xpm" 
-# define PDOWN_PATH "sprites/pdown.xpm"
-# define PRIGHT_PATH "sprites/pright.xpm" 
-# define PLEFT_PATH "sprites/pleft.xpm"
-# define VILLAIN_PATH "sprites/villain.xpm"
+
+# define W_P "sprites/wall.xpm"
+# define F_P "sprites/floor.xpm"
+# define E_P "sprites/exit.xpm"
+# define E2_P "sprites/exit2.xpm"
+# define C_P "sprites/cake.xpm"
+# define PUP_P "sprites/pup.xpm" 
+# define PDWN_P "sprites/pdown.xpm"
+# define PR_P "sprites/pright.xpm" 
+# define PL_P "sprites/pleft.xpm"
+# define V_P "sprites/villain.xpm"
 
 /* ************************************************************************** */
 /*                              ERROR MESSAGE                                 */

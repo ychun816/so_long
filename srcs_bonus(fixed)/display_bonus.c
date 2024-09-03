@@ -6,7 +6,7 @@
 /*   By: yilin <yilin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:11:54 by yilin             #+#    #+#             */
-/*   Updated: 2024/08/28 19:00:58 by yilin            ###   ########.fr       */
+/*   Updated: 2024/08/27 19:50:31 by yilin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ int	load_imgs(t_mlx *data)
 	data->img[PUP].ptr = mlx_xpm_file_to_image(data->mlx_ptr, PUP_P, &i, &i);
 	data->img[PRIGHT].ptr = mlx_xpm_file_to_image(data->mlx_ptr, PR_P, &i, &i);
 	data->img[PLEFT].ptr = mlx_xpm_file_to_image(data->mlx_ptr, PL_P, &i, &i);
+	data->img[VILLAIN].ptr = mlx_xpm_file_to_image(data->mlx_ptr, V_P, &i, &i);
 	check_imgs_valid(data);
 	return (SUCCESS);
 }
@@ -97,6 +98,8 @@ void	init_map(t_mlx *data)
 				print_img(data, data->img[CAKE].ptr, x * BPS, y * BPS);
 			if (data->map[y][x] == 'E')
 				print_img(data, data->img[EXIT].ptr, x * BPS, y * BPS);
+			if (data->map[y][x] == 'V')
+				print_img(data, data->img[VILLAIN].ptr, x * BPS, y * BPS);
 			else if (data->map[y][x] == 'E' && data->left_cakes == 0)
 				print_img(data, data->img[EXIT2].ptr, x * BPS, y * BPS);
 		}

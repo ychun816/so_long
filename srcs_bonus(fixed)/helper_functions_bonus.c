@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   helper_functions.c                                 :+:      :+:    :+:   */
+/*   helper_functions_bonus.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yilin <yilin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 16:28:32 by yilin             #+#    #+#             */
-/*   Updated: 2024/08/28 12:14:19 by yilin            ###   ########.fr       */
+/*   Updated: 2024/09/03 17:54:59 by yilin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,14 +162,13 @@ void	test_display_map(t_mlx *data)
 }
 */
 
-/*FOR TEST 2 || DFS MAP
+/*// FOR TEST 2 || DFS MAP
 void	test_display_dfsmap(char **map)
 {
 	int i = 0;
 	while (map[i])
 		printf("%s", map[i++]);
-}
-*/
+}*/
 
 /*FOR TEST 3
 int key_press(int keycode, void *param)

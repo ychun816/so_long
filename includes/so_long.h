@@ -6,7 +6,7 @@
 /*   By: yilin <yilin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 14:03:22 by yilin             #+#    #+#             */
-/*   Updated: 2024/08/23 22:04:52 by yilin            ###   ########.fr       */
+/*   Updated: 2024/09/03 17:56:28 by yilin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@
 # include <fcntl.h>
 # include <errno.h>
 
-// # include "../mlx_linux/mlx_int.h"
-// # include <X11/X.h>
 # include "../mlx_linux/mlx.h"
+// # include "mlx_linux/mlx.h"
+# include <X11/X.h>
+# include <X11/Xlib.h>
 # include <X11/keysym.h>
-# include <mlx.h>
 
 /* ************************************************************************** */
 /*                                STRUCTURE                                   */
@@ -61,94 +61,114 @@ typedef enum e_error
 typedef unsigned char	t_byte;
 
 /*structure for img*/
-typedef struct	s_img
+/*Bits per pixel*/
+/*端序Endianness of the image data "大端和小端（Big endian and Little endian）"*/
+/*Length of a line of pixels in bytes, used for alignment optimization.*/
+typedef struct s_img
 {
 	void	*ptr;
 	char	*pixel_ptr;
-	int	bpp;//Bits per pixel
-	int	endian;//端序Endianness of the image data "大端和小端（Big endian and Little endian）"
-	int	pline_len;//Length of a line of pixels in bytes, used for alignment optimization.
+	int		bpp;
+	int		endian;
+	int		pline_len;
 }	t_img;
 
 /*structure for mlx commands*/
+/*Connection pointer (e.g., to a graphics library like MiniLibX)*/
+/*Array of images*/
+/*2D array => the game map.*/
+
 typedef struct s_mlx
 {
-	void	*mlx_ptr;//Connection pointer (e.g., to a graphics library like MiniLibX)
+	void	*mlx_ptr;
 	void	*window;
-	t_img	img[SPRITES_NB];//Array of images
-	char	**map;//2D array => the game map.
-	int	width;
-	int	height;
-	int	p_x;
-	int	p_y;
-	int	p_dir;//player's direction
-	int	left_cakes;//Number of coins left to collect
-	int	moves;
-	int p_prevx;
-	int	p_prevy;
+	t_img	img[SPRITES_NB];
+	char	**map;
+	int		width;
+	int		height;
+	int		p_x;
+	int		p_y;
+	int		p_dir;
+	int		left_cakes;
+	int		moves;
 }	t_mlx;
 
 /*structure for check*/
 typedef struct s_check
 {
-	int	count_player;//Number of player start positions
-	int	count_exit;//Number of exits
-	int	count_cakes;//Number of collectibles
-	int count_villains;
-	char	**dfs_map;//2D array used for depth-first search, possibly for pathfinding or validation.
-} t_check;
+	char	**dfs_map;
+	int		count_player;
+	int		count_exit;
+	int		count_cakes;
+	int		count_villains;
+}	t_check;
 
-// /*structure for player*/
-// typedef struct	s_player
-// {
-// 	int	x;
-// 	int	y;
-// 	int	step_count;
-// }	t_player;
+/*structure for dfs y/x*/
+typedef struct s_dfs
+{
+	int	y;
+	int	x;
+}	t_dfs;
 
 /* ************************************************************************** */
 /*                                FUNCTIONS                                   */
 /* ************************************************************************** */
 
 /*SO LONG MAIN*/
-int		handle_keypress(int keyboard, t_mlx *data);
-void	check_n_move_player(t_mlx *data, int pos);
-void	update_map(t_mlx *data, int y, int x);
 char	**read_n_set_map(int fd);
 
-/*ERROR CHECKERS*/
+/*CHECK DISPLAY*/
+bool	is_gamewindow_oversize(t_mlx *data, int width, int height);
+void	check_imgs_valid(t_mlx *data);
 bool	is_pos_blocked(t_mlx *data);
+
+/*DISPLAY*/
+int		display_window(t_mlx *data, char *filename, int width, int height);
+bool	is_gamewindow_oversize(t_mlx *data, int width, int height);
+int		load_imgs(t_mlx *data);
+void	init_map(t_mlx *data);
+
+/*CHECK MAP*/
 bool	is_map_valid(char **map, char *file_name, t_mlx *data);
 bool	is_map_rectangle(char **map);
 bool	is_elements_valid(char **map, t_check *content);
-bool is_path_valid(char **map, t_check *ctnt);
+bool	is_path_valid(char **map, t_check *ctnt);
+
+/*CHECK HELPERS*/
+bool	loop_n_check_elements(char **map, t_check *content);
+bool	is_line_wall(char **line, int y);
+bool	is_middle_line_valid(char **line, int y, int wall);
 bool	is_line_valid(char **line, int y, int wall);
 
-/*EXIT PROGRAM =>QUIT GAME*/
-int	exit_program(t_mlx	*data);
+/*dfs*/
+void	ft_dfs(char **map, t_dfs pos, char *notwalls, t_check *content);
+bool	is_valid_after_dfs(t_check *content);
 
-/*DISPLAY*/
-int	display_window(t_mlx *data, char *filename, int width, int height);
-int	load_imgs(t_mlx *data);
-void	init_map(t_mlx *data);
+/*MOVE PLAYER*/
+int		handle_keypress(int keyboard, t_mlx *data);
+void	check_n_move_player(t_mlx *data, int pos);
+void	update_map(t_mlx *data, int y, int x);
 void	move_n_track_player(t_mlx *data);
 void	animate_player(t_mlx *data, int *x, int *y, int i);
 
+/*TRACK MOVES*/
+void	check_meet_villain(t_mlx *data, int y, int x);
+void	track_collect_cakes(t_mlx *data, int y, int x);
+
+/*EXIT PROGRAM =>QUIT GAME*/
+int		exit_program(t_mlx	*data);
+
 /*CLEANUP*/
 void	free_strs(char **strs, int heap);
-int	free_all(int mode, ...);
-
-/*dfs*/
-void	ft_dfs(char **map, int y, int x, char *notwalls, t_check *content);
-bool	is_valid_after_dfs(t_check *content);
+int		free_all(int mode, ...);
 
 /*HELPER FUNC*/
 size_t	ft_arraylen(const char **arrays);
-long	get_xy(char** map, char element);
-int	print_img(t_mlx	*data, void *img_ptr, int x, int y);
-char **ft_arraydup(char **array);
-char	**ft_strsjoin(char const **strs, char *last_str, int free_strs, int free_str);
-void	check_imgs_valid(t_mlx *data);
-void	test_display_map(t_mlx *data);
-void	test_display_dfsmap(char **map);
+long	get_xy(char **map, char element);
+int		print_img(t_mlx	*data, void *img_ptr, int x, int y);
+char	**ft_arraydup(char **array);
+char	**ft_strsjoin(char const **strs, char *end_s, int ss_fr, int s_fr);
+/*void	test_display_map(t_mlx *data);*/
+/*void	test_display_dfsmap(char **map);*/
+
 #endif
